@@ -1,0 +1,92 @@
+{
+  "name": "claudist-mcp",
+  "version": "1.0.0-alpha.1",
+  "description": "MCP server providing filtered Claude Code conversation history to sub-agents with comprehensive filtering options",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "claudist-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "QUICK_REFERENCE.md",
+    "CLAUDE_CODE_LOGGING.md",
+    "FILTERING_LOGIC.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "format": "ultracite format",
+    "lint": "ultracite lint",
+    "check": "ultracite format",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:watch": "vitest --watch",
+    "typecheck": "tsc --noEmit",
+    "docs": "typedoc --out docs src/index.ts",
+    "clean": "rm -rf dist coverage .tsbuildinfo docs",
+    "prepublishOnly": "npm run clean && npm run build",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "claude-code",
+    "context",
+    "conversation",
+    "history",
+    "ai",
+    "llm"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/claudist-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/claudist-mcp/issues"
+  },
+  "homepage": "https://github.com/yourusername/claudist-mcp#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.7.0",
+    "lru-cache": "^11.0.2",
+    "zod": "^4.0.15"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.2",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^2.1.9",
+    "husky": "^9.1.7",
+    "lint-staged": "latest",
+    "tsx": "^4.19.2",
+    "typedoc": "^0.28.9",
+    "typescript": "^5.7.2",
+    "ultracite": "^5.1.1",
+    "vitest": "^2.1.8"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "ultracite format",
+      "ultracite lint"
+    ],
+    "*.{json,jsonc}": [
+      "ultracite format"
+    ],
+    "package.json": [
+      "ultracite format"
+    ]
+  }
+}
