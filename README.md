@@ -7,21 +7,26 @@
 
 An MCP server that provides Claude Code sub-agents with conversation context, solving the "blank slate" problem where sub-agents start with zero knowledge of previous discussions.
 
+## ⚠️ Important: For Sub-Agents Only
+
+This MCP server provides tools that are **only useful for sub-agents**. The main Claude Code instance doesn't need these tools since it already has full conversation context.
+
+**When these tools are useful:**
+- ✅ Sub-agents that need access to conversation history
+- ❌ Main Claude Code instance (it already has full context)
+
 ## Installation
 
-### Quick Install (Recommended)
-```bash
-claude mcp add-json sub-agent-continue '{"type":"stdio","command":"node","args":["/absolute/path/to/sub-agent-continue/dist/index.js"]}'
-```
+### Requirements
+- Node.js 18 or higher
 
-### Manual Install
 ```bash
 git clone https://github.com/razyone/sub-agent-continue.git
 cd sub-agent-continue
 npm install && npm run build
 ```
 
-Add to Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+Add to your Claude configuration:
 ```json
 {
   "mcpServers": {
@@ -34,7 +39,7 @@ Add to Claude Desktop config (`~/Library/Application Support/Claude/claude_deskt
 }
 ```
 
-Restart Claude Desktop after updating the configuration.
+For detailed configuration instructions, see [Installing MCP Servers](https://docs.anthropic.com/en/docs/claude-code/mcp#installing-mcp-servers).
 
 ## Tools
 

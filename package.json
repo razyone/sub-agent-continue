@@ -1,7 +1,7 @@
 {
   "name": "sub-agent-continue",
-  "version": "1.0.0-alpha.2",
-  "description": "MCP server that enables Claude Code sub-agents to continue with the same context as their parent agent, maintaining conversation continuity",
+  "version": "1.0.0-alpha.3",
+  "description": "MCP server for Claude Code sub-agents to access conversation context from their parent agent (not for main Claude instance)",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
