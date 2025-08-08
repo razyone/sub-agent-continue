@@ -34,11 +34,11 @@ jobs:
           check-latest: true
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           
       - name: Verify Node.js version
         run: node --version
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           
       - name: Install dependencies
         run: |
