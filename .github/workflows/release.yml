@@ -34,6 +34,9 @@ jobs:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           git_user_signingkey: true
           git_commit_gpgsign: true
+          git_config_global: true
+          git_committer_name: ${{ secrets.GIT_COMMITTER_NAME }}
+          git_committer_email: ${{ secrets.GIT_COMMITTER_EMAIL }}
           
       - name: Setup Node.js
         uses: actions/setup-node@v4
