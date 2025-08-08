@@ -85,6 +85,15 @@
     "ultracite": "^5.1.1",
     "vitest": "^3.2.4"
   },
+  "release": {
+    "branches": [
+      "stable",
+      {
+        "name": "main",
+        "prerelease": "beta"
+      }
+    ]
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "ultracite format",
