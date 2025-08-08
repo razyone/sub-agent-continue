@@ -55,6 +55,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Server startup logging goes to stderr (by design for MCP protocol)
 - Cache size is not configurable via environment variables (planned for future release)
 
+## [1.0.0-beta.2] - 2025-01-08
+
+### Added
+- Comprehensive "How It Works" section explaining both getCurrentConversation tools
+- Key benefits documentation: context inheritance, cost savings, clean context management  
+- Specific use cases: lint-agents, planning-agents, side tasks
+- Sample sub-agent creation prompt template for users
+
+### Changed
+- Enhanced README with sub-agent workflow explanation and usage examples
+
 ## [Unreleased]
 
 ### Planned
