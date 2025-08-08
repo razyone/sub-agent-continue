@@ -12,10 +12,11 @@ export async function getCurrentConversation(
 ): Promise<string> {
   return measure('getCurrentConversation', () => {
     try {
-      const { projectPath } = params;
+      const { projectPath, filterPreset } = params;
 
       return getConversationBase({
         projectPath,
+        filterPreset,
         cacheKeySuffix: 'full',
         processEntries: excludeLastUserMessage,
       });
@@ -40,6 +41,12 @@ export const getCurrentConversationSchema = {
         type: 'string',
         description:
           'Project path to get conversation from (defaults to current directory)',
+      },
+      filterPreset: {
+        type: 'string',
+        enum: ['none', 'light', 'heavy'],
+        description:
+          'Filter preset to apply: none (no filtering), light (skip reasoning only), heavy (skip reasoning + sub-agents). Defaults to heavy.',
       },
     },
   },

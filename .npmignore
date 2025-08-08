@@ -1,0 +1,61 @@
+# Source files (TypeScript)
+src/
+tests/
+
+# Development files
+.husky/
+.claude/
+.vscode/
+.github/
+
+# Configuration files
+tsconfig.json
+vitest.config.ts
+commitlint.config.js
+biome.json
+.editorconfig
+.nvmrc
+
+# Test coverage
+coverage/
+*.lcov
+
+# Build artifacts
+*.tsbuildinfo
+docs/
+
+# Git files
+.git/
+.gitignore
+
+# Environment files
+.env*
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+*.sublime-*
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Keep these
+!dist/
+!README.md
+!LICENSE
+!CHANGELOG.md
+!package.json
+!QUICK_REFERENCE.md
+!CLAUDE_CODE_LOGGING.md
+!FILTERING_LOGIC.md

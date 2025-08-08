@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
   FILTER_PRESETS,
+  getFilterConfig,
   getFilterConfigFromEnv,
   TOOL_CATEGORIES,
   ToolCategory,
@@ -116,9 +117,8 @@ describe('filter-config', () => {
       expect(config.tools.excludeFailed).toBe(false);
     });
 
-    it('should load specified preset', () => {
-      process.env.CLAUDIST_FILTER_PRESET = 'light';
-      const config = getFilterConfigFromEnv();
+    it('should load specified preset via getFilterConfig', () => {
+      const config = getFilterConfig('light');
 
       expect(config.content.excludeThinking).toBe(true);
       expect(config.content.excludeSystemReminders).toBe(false);
@@ -128,27 +128,26 @@ describe('filter-config', () => {
     });
 
     it('should override preset with environment variables', () => {
-      process.env.CLAUDIST_FILTER_PRESET = 'heavy';
-      process.env.CLAUDIST_EXCLUDE_THINKING = 'false';
-      process.env.CLAUDIST_EXCLUDE_SUBAGENT_CALLS = 'false';
+      process.env.SUBAGENT_EXCLUDE_THINKING = 'false';
+      process.env.SUBAGENT_EXCLUDE_SUBAGENT_CALLS = 'false';
 
       const config = getFilterConfigFromEnv();
 
       expect(config.content.excludeThinking).toBe(false);
       expect(config.subAgents.excludeCalls).toBe(false);
-      // Other heavy preset values should remain
+      // Heavy preset values should remain (default)
       expect(config.subAgents.excludeResponses).toBe(true);
     });
 
     it('should parse tool categories from environment', () => {
-      process.env.CLAUDIST_EXCLUDE_TOOL_CATEGORIES = 'file_edit,web';
+      process.env.SUBAGENT_EXCLUDE_TOOL_CATEGORIES = 'file_edit,web';
       const config = getFilterConfigFromEnv();
 
       expect(config.tools.excludeCategories).toEqual(['file_edit', 'web']);
     });
 
     it('should parse specific tools from environment', () => {
-      process.env.CLAUDIST_EXCLUDE_TOOLS = 'Edit,Write,TodoWrite';
+      process.env.SUBAGENT_EXCLUDE_TOOLS = 'Edit,Write,TodoWrite';
       const config = getFilterConfigFromEnv();
 
       expect(config.tools.excludeSpecific).toEqual([
@@ -159,7 +158,7 @@ describe('filter-config', () => {
     });
 
     it('should parse custom patterns from environment', () => {
-      process.env.CLAUDIST_CUSTOM_PATTERNS = '<debug>.*?</debug>,TODO:.*';
+      process.env.SUBAGENT_CUSTOM_PATTERNS = '<debug>.*?</debug>,TODO:.*';
       const config = getFilterConfigFromEnv();
 
       expect(config.content.customPatterns).toEqual([
@@ -169,9 +168,9 @@ describe('filter-config', () => {
     });
 
     it('should parse message filtering options', () => {
-      process.env.CLAUDIST_MAX_MESSAGE_LENGTH = '5000';
-      process.env.CLAUDIST_EXCLUDE_EMPTY = 'true';
-      process.env.CLAUDIST_EXCLUDE_ROLES = 'system,debug';
+      process.env.SUBAGENT_MAX_MESSAGE_LENGTH = '5000';
+      process.env.SUBAGENT_EXCLUDE_EMPTY = 'true';
+      process.env.SUBAGENT_EXCLUDE_ROLES = 'system,debug';
 
       const config = getFilterConfigFromEnv();
 
@@ -181,9 +180,9 @@ describe('filter-config', () => {
     });
 
     it('should handle boolean environment variables correctly', () => {
-      process.env.CLAUDIST_EXCLUDE_TOOL_CALLS_ONLY = 'true';
-      process.env.CLAUDIST_EXCLUDE_TOOL_RESULTS_ONLY = 'false';
-      process.env.CLAUDIST_EXCLUDE_FAILED_TOOLS = 'true';
+      process.env.SUBAGENT_EXCLUDE_TOOL_CALLS_ONLY = 'true';
+      process.env.SUBAGENT_EXCLUDE_TOOL_RESULTS_ONLY = 'false';
+      process.env.SUBAGENT_EXCLUDE_FAILED_TOOLS = 'true';
 
       const config = getFilterConfigFromEnv();
 
@@ -193,8 +192,8 @@ describe('filter-config', () => {
     });
 
     it('should handle advanced options', () => {
-      process.env.CLAUDIST_PRESERVE_CONTEXT = 'false';
-      process.env.CLAUDIST_COMPACT_MODE = 'true';
+      process.env.SUBAGENT_PRESERVE_CONTEXT = 'false';
+      process.env.SUBAGENT_COMPACT_MODE = 'true';
 
       const config = getFilterConfigFromEnv();
 
@@ -203,7 +202,7 @@ describe('filter-config', () => {
     });
 
     it('should use preset values when env vars are not set', () => {
-      process.env.CLAUDIST_FILTER_PRESET = 'light';
+      process.env.SUBAGENT_FILTER_PRESET = 'light';
 
       const config = getFilterConfigFromEnv();
       const lightPreset = FILTER_PRESETS.light;
@@ -221,9 +220,8 @@ describe('filter-config', () => {
     });
 
     it('should handle invalid preset name gracefully', () => {
-      process.env.CLAUDIST_FILTER_PRESET = 'invalid-preset';
-
-      const config = getFilterConfigFromEnv();
+      // Test with getFilterConfig directly
+      const config = getFilterConfig('invalid-preset' as any);
 
       // Should fall back to heavy preset
       expect(config.content.excludeThinking).toBe(
@@ -235,8 +233,8 @@ describe('filter-config', () => {
     });
 
     it('should preserve preset defaults for complex tool config', () => {
-      process.env.CLAUDIST_FILTER_PRESET = 'heavy';
-      process.env.CLAUDIST_EXCLUDE_THINKING = 'false'; // Override one setting
+      process.env.SUBAGENT_FILTER_PRESET = 'heavy';
+      process.env.SUBAGENT_EXCLUDE_THINKING = 'false'; // Override one setting
 
       const config = getFilterConfigFromEnv();
 
@@ -257,9 +255,9 @@ describe('filter-config', () => {
 
   describe('Edge Cases', () => {
     it('should handle empty environment variables', () => {
-      process.env.CLAUDIST_EXCLUDE_TOOL_CATEGORIES = '';
-      process.env.CLAUDIST_EXCLUDE_TOOLS = '';
-      process.env.CLAUDIST_CUSTOM_PATTERNS = '';
+      process.env.SUBAGENT_EXCLUDE_TOOL_CATEGORIES = '';
+      process.env.SUBAGENT_EXCLUDE_TOOLS = '';
+      process.env.SUBAGENT_CUSTOM_PATTERNS = '';
 
       const config = getFilterConfigFromEnv();
 
@@ -269,7 +267,7 @@ describe('filter-config', () => {
     });
 
     it('should handle malformed max length', () => {
-      process.env.CLAUDIST_MAX_MESSAGE_LENGTH = 'not-a-number';
+      process.env.SUBAGENT_MAX_MESSAGE_LENGTH = 'not-a-number';
 
       const config = getFilterConfigFromEnv();
 
@@ -277,10 +275,10 @@ describe('filter-config', () => {
     });
 
     it('should combine preset and env configurations correctly', () => {
-      process.env.CLAUDIST_FILTER_PRESET = 'minimal';
-      process.env.CLAUDIST_EXCLUDE_TOOL_CATEGORIES = 'file_edit';
-      process.env.CLAUDIST_EXCLUDE_THINKING = 'false';
-      process.env.CLAUDIST_MAX_MESSAGE_LENGTH = '3000';
+      // Env vars should override defaults but not the preset parameter
+      process.env.SUBAGENT_EXCLUDE_TOOL_CATEGORIES = 'file_edit';
+      process.env.SUBAGENT_EXCLUDE_THINKING = 'false';
+      process.env.SUBAGENT_MAX_MESSAGE_LENGTH = '3000';
 
       const config = getFilterConfigFromEnv();
 

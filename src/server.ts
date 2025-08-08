@@ -13,14 +13,14 @@ import {
   getCurrentConversationUptoSchema,
 } from './tools/get-current-conversation-upto.js';
 
-export class ClaudistServer {
+export class SubAgentContinueServer {
   private server: Server;
 
   constructor() {
     this.server = new Server(
       {
-        name: 'claudist-mcp',
-        version: '1.0.0',
+        name: 'sub-agent-continue',
+        version: '1.0.0-alpha.1',
       },
       {
         capabilities: {
@@ -85,11 +85,21 @@ export class ClaudistServer {
   async start() {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    process.stderr.write('Claudist MCP server started\n');
+    process.stderr.write('Sub Agent Continue MCP server started\n');
   }
 }
 
 export async function startServer() {
-  const server = new ClaudistServer();
+  const server = new SubAgentContinueServer();
+
+  // Graceful shutdown handling
+  const shutdown = (signal: string) => {
+    process.stderr.write(`\nReceived ${signal}, shutting down gracefully...\n`);
+    process.exit(0);
+  };
+
+  process.on('SIGINT', () => shutdown('SIGINT'));
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+
   await server.start();
 }

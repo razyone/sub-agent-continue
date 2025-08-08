@@ -1,13 +1,14 @@
-import type { ConversationEntry } from '../types/index.js';
+import type { ConversationEntry, FilterPreset } from '../types/index.js';
 import { getCacheKey, getGlobalCache } from './cache.js';
 import { findMostRecentConversation } from './file-system.js';
 import { filterConversation } from './filter.js';
-import { getFilterConfigFromEnv } from './filter-config.js';
+import { getFilterConfig } from './filter-config.js';
 import { parseConversationFile } from './parser.js';
 import { createEmptyConversationXML, toXML } from './xml.js';
 
 export interface ConversationOptions {
   projectPath?: string;
+  filterPreset?: FilterPreset;
   cacheKeySuffix?: string;
   processEntries?: (entries: ConversationEntry[]) => ConversationEntry[];
   emptyMessage?: string;
@@ -19,8 +20,13 @@ export interface ConversationOptions {
  */
 export function getConversationBase(options: ConversationOptions): string {
   try {
-    const { projectPath, cacheKeySuffix, processEntries, emptyMessage } =
-      options;
+    const {
+      projectPath,
+      filterPreset,
+      cacheKeySuffix,
+      processEntries,
+      emptyMessage,
+    } = options;
 
     // Find the most recent conversation file
     const conversationFile = findMostRecentConversation(projectPath);
@@ -52,7 +58,7 @@ export function getConversationBase(options: ConversationOptions): string {
     }
 
     // Apply filters to the conversation
-    const filterConfig = getFilterConfigFromEnv();
+    const filterConfig = getFilterConfig(filterPreset);
     const filteredEntries = filterConversation(entriesToFilter, filterConfig);
 
     // Convert to XML

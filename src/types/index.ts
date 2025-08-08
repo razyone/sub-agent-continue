@@ -53,12 +53,24 @@ export interface MCPConfig {
   };
 }
 
+export type FilterPreset =
+  | 'none'
+  | 'light'
+  | 'heavy'
+  | 'smart'
+  | 'minimal'
+  | 'moderate'
+  | 'aggressive'
+  | 'development';
+
 export interface ToolParams {
   getCurrentConversation: {
     projectPath?: string;
+    filterPreset?: FilterPreset;
   };
   getCurrentConversationUpto: {
     projectPath?: string;
     userMessageIndex: number;
+    filterPreset?: FilterPreset;
   };
 }

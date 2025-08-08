@@ -10,7 +10,7 @@ export async function getCurrentConversationUpto(
 ): Promise<string> {
   return measure('getCurrentConversationUpto', () => {
     try {
-      const { projectPath, userMessageIndex } = params;
+      const { projectPath, userMessageIndex, filterPreset } = params;
 
       // Validate user message index
       if (userMessageIndex <= 0) {
@@ -21,6 +21,7 @@ export async function getCurrentConversationUpto(
 
       return getConversationBase({
         projectPath,
+        filterPreset,
         processEntries: (entries) =>
           getUpToUserMessage(entries, userMessageIndex),
         emptyMessage: `No messages found before user message ${userMessageIndex}`,
@@ -52,6 +53,12 @@ export const getCurrentConversationUptoSchema = {
         description:
           'Get messages up to (but not including) this user message number',
         minimum: 1,
+      },
+      filterPreset: {
+        type: 'string',
+        enum: ['none', 'light', 'heavy'],
+        description:
+          'Filter preset to apply: none (no filtering), light (skip reasoning only), heavy (skip reasoning + sub-agents). Defaults to heavy.',
       },
     },
     required: ['userMessageIndex'],

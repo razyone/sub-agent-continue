@@ -2,6 +2,8 @@
  * Comprehensive filtering configuration for conversation entries
  */
 
+import type { FilterPreset } from '../types/index.js';
+
 export interface FilterConfig {
   // Content filtering
   content: {
@@ -190,18 +192,18 @@ function buildContentConfig(
   preset: (typeof FILTER_PRESETS)[keyof typeof FILTER_PRESETS]
 ): FilterConfig['content'] {
   return {
-    excludeThinking: process.env.CLAUDIST_EXCLUDE_THINKING
-      ? process.env.CLAUDIST_EXCLUDE_THINKING !== 'false'
+    excludeThinking: process.env.SUBAGENT_EXCLUDE_THINKING
+      ? process.env.SUBAGENT_EXCLUDE_THINKING !== 'false'
       : preset.content.excludeThinking,
     excludeSystemReminders: getEnvBoolean(
-      process.env.CLAUDIST_EXCLUDE_SYSTEM_REMINDERS,
+      process.env.SUBAGENT_EXCLUDE_SYSTEM_REMINDERS,
       preset.content.excludeSystemReminders
     ),
     excludeErrors: getEnvBoolean(
-      process.env.CLAUDIST_EXCLUDE_ERRORS,
+      process.env.SUBAGENT_EXCLUDE_ERRORS,
       preset.content.excludeErrors
     ),
-    customPatterns: getEnvStringArray(process.env.CLAUDIST_CUSTOM_PATTERNS),
+    customPatterns: getEnvStringArray(process.env.SUBAGENT_CUSTOM_PATTERNS),
   };
 }
 
@@ -212,11 +214,11 @@ function buildSubAgentsConfig(
   preset: (typeof FILTER_PRESETS)[keyof typeof FILTER_PRESETS]
 ): FilterConfig['subAgents'] {
   return {
-    excludeCalls: process.env.CLAUDIST_EXCLUDE_SUBAGENT_CALLS
-      ? process.env.CLAUDIST_EXCLUDE_SUBAGENT_CALLS !== 'false'
+    excludeCalls: process.env.SUBAGENT_EXCLUDE_SUBAGENT_CALLS
+      ? process.env.SUBAGENT_EXCLUDE_SUBAGENT_CALLS !== 'false'
       : preset.subAgents.excludeCalls,
-    excludeResponses: process.env.CLAUDIST_EXCLUDE_SUBAGENT_RESPONSES
-      ? process.env.CLAUDIST_EXCLUDE_SUBAGENT_RESPONSES !== 'false'
+    excludeResponses: process.env.SUBAGENT_EXCLUDE_SUBAGENT_RESPONSES
+      ? process.env.SUBAGENT_EXCLUDE_SUBAGENT_RESPONSES !== 'false'
       : preset.subAgents.excludeResponses,
   };
 }
@@ -230,24 +232,24 @@ function buildToolsConfig(
   return {
     excludeCategories:
       (getEnvStringArray(
-        process.env.CLAUDIST_EXCLUDE_TOOL_CATEGORIES
+        process.env.SUBAGENT_EXCLUDE_TOOL_CATEGORIES
       ) as ToolCategory[]) ||
       (preset.tools.excludeCategories
         ? [...preset.tools.excludeCategories]
         : undefined),
     excludeSpecific:
-      getEnvStringArray(process.env.CLAUDIST_EXCLUDE_TOOLS) ||
+      getEnvStringArray(process.env.SUBAGENT_EXCLUDE_TOOLS) ||
       (preset.tools.excludeSpecific
         ? [...preset.tools.excludeSpecific]
         : undefined),
-    excludeCallsOnly: process.env.CLAUDIST_EXCLUDE_TOOL_CALLS_ONLY
-      ? process.env.CLAUDIST_EXCLUDE_TOOL_CALLS_ONLY === 'true'
+    excludeCallsOnly: process.env.SUBAGENT_EXCLUDE_TOOL_CALLS_ONLY
+      ? process.env.SUBAGENT_EXCLUDE_TOOL_CALLS_ONLY === 'true'
       : false,
-    excludeResultsOnly: process.env.CLAUDIST_EXCLUDE_TOOL_RESULTS_ONLY
-      ? process.env.CLAUDIST_EXCLUDE_TOOL_RESULTS_ONLY === 'true'
+    excludeResultsOnly: process.env.SUBAGENT_EXCLUDE_TOOL_RESULTS_ONLY
+      ? process.env.SUBAGENT_EXCLUDE_TOOL_RESULTS_ONLY === 'true'
       : false,
     excludeFailed: getEnvBoolean(
-      process.env.CLAUDIST_EXCLUDE_FAILED_TOOLS,
+      process.env.SUBAGENT_EXCLUDE_FAILED_TOOLS,
       preset.tools.excludeFailed ?? false
     ),
   };
@@ -261,27 +263,30 @@ function buildMessagesConfig(
 ): FilterConfig['messages'] {
   return {
     excludeEmpty: getEnvBoolean(
-      process.env.CLAUDIST_EXCLUDE_EMPTY,
+      process.env.SUBAGENT_EXCLUDE_EMPTY,
       preset.messages.excludeEmpty ?? false
     ),
     excludeByRole:
-      getEnvStringArray(process.env.CLAUDIST_EXCLUDE_ROLES) ??
+      getEnvStringArray(process.env.SUBAGENT_EXCLUDE_ROLES) ??
       ('excludeByRole' in preset.messages
         ? (preset.messages.excludeByRole as string[] | undefined)
         : undefined),
-    maxLength: process.env.CLAUDIST_MAX_MESSAGE_LENGTH
-      ? Number.parseInt(process.env.CLAUDIST_MAX_MESSAGE_LENGTH, 10)
+    maxLength: process.env.SUBAGENT_MAX_MESSAGE_LENGTH
+      ? Number.parseInt(process.env.SUBAGENT_MAX_MESSAGE_LENGTH, 10)
       : undefined,
   };
 }
 
 /**
- * Get filter configuration from environment variables
+ * Get filter configuration based on preset name
+ * @param presetName - The name of the filter preset to use (defaults to 'heavy')
+ * @returns FilterConfig based on the preset
  */
-export function getFilterConfigFromEnv(): FilterConfig {
-  const presetName = process.env.CLAUDIST_FILTER_PRESET || 'heavy';
+export function getFilterConfig(presetName?: FilterPreset): FilterConfig {
+  // Use provided preset or default to 'heavy'
+  const selectedPreset = presetName || 'heavy';
   const preset =
-    FILTER_PRESETS[presetName as keyof typeof FILTER_PRESETS] ||
+    FILTER_PRESETS[selectedPreset as keyof typeof FILTER_PRESETS] ||
     FILTER_PRESETS.heavy;
 
   return {
@@ -290,13 +295,21 @@ export function getFilterConfigFromEnv(): FilterConfig {
     tools: buildToolsConfig(preset),
     messages: buildMessagesConfig(preset),
     advanced: {
-      preserveContext: process.env.CLAUDIST_PRESERVE_CONTEXT
-        ? process.env.CLAUDIST_PRESERVE_CONTEXT !== 'false'
+      preserveContext: process.env.SUBAGENT_PRESERVE_CONTEXT
+        ? process.env.SUBAGENT_PRESERVE_CONTEXT !== 'false'
         : preset.advanced.preserveContext,
       compactMode: getEnvBoolean(
-        process.env.CLAUDIST_COMPACT_MODE,
+        process.env.SUBAGENT_COMPACT_MODE,
         preset.advanced.compactMode
       ),
     },
   };
+}
+
+/**
+ * Get filter configuration from environment variables (backward compatibility)
+ * @deprecated Use getFilterConfig() instead
+ */
+export function getFilterConfigFromEnv(): FilterConfig {
+  return getFilterConfig();
 }
