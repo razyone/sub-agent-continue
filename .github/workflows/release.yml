@@ -20,13 +20,13 @@ jobs:
     concurrency:
       group: release-${{ github.ref }}
       cancel-in-progress: false
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@01dd5d3ca463c7f10f7f4f7b4f177225ac661ee4 # v6.1.0
         with:
@@ -34,40 +34,41 @@ jobs:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           git_user_signingkey: true
           git_commit_gpgsign: true
+          git_tag_gpgsign: true
           git_config_global: true
-          git_committer_name: ${{ secrets.GIT_COMMITTER_NAME }}
-          git_committer_email: ${{ secrets.GIT_COMMITTER_EMAIL }}
-          
+          git_user_name: ${{ secrets.GIT_USER_NAME }}
+          git_user_email: ${{ secrets.GIT_USER_EMAIL }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: "20.x"
           check-latest: true
-          cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
+          cache: "npm"
+          registry-url: "https://registry.npmjs.org"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          
+
       - name: Verify Node.js version
         run: node --version
-          
+
       - name: Install dependencies
         run: |
           npm ci
           npm install @biomejs/cli-linux-x64 @rollup/rollup-linux-x64-gnu @esbuild/linux-x64
-          
+
       - name: Run type check
         run: npm run typecheck
-        
+
       - name: Run linter
         run: npm run lint
-        
+
       - name: Run tests
         run: npm test
-        
+
       - name: Run build
         run: npm run build
-        
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
