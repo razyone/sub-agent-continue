@@ -10,9 +10,6 @@
   "files": [
     "dist/**/*",
     "README.md",
-    "QUICK_REFERENCE.md",
-    "CLAUDE_CODE_LOGGING.md",
-    "FILTERING_LOGIC.md",
     "CHANGELOG.md",
     "LICENSE"
   ],
@@ -57,6 +54,10 @@
   "homepage": "https://github.com/razyone/sub-agent-continue#readme",
   "engines": {
     "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.7.0",

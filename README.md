@@ -1,5 +1,10 @@
 # Sub Agent Continue MCP
 
+[![CI](https://github.com/razyone/sub-agent-continue/workflows/CI/badge.svg)](https://github.com/razyone/sub-agent-continue/actions)
+[![npm version](https://badge.fury.io/js/sub-agent-continue.svg)](https://www.npmjs.com/package/sub-agent-continue)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/node/v/sub-agent-continue.svg)](https://nodejs.org/)
+
 An MCP server that provides Claude Code sub-agents with conversation context, solving the "blank slate" problem where sub-agents start with zero knowledge of previous discussions.
 
 ## Installation
