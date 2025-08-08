@@ -1,14 +1,16 @@
 {
   "branches": [
+    "main",
     {
-      "name": "main",
-      "prerelease": "beta"
+      "name": "beta",
+      "prerelease": true
     },
     {
       "name": "alpha",
       "prerelease": true
     }
   ],
+  "repositoryUrl": "https://github.com/razyone/sub-agent-continue",
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
