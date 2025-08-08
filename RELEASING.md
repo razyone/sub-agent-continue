@@ -73,10 +73,22 @@ npm run release:dry-run
 
 ### Manual Release
 
-Force a release (use sparingly):
+**Important:** semantic-release is designed to run in CI environments. Instead of running locally, trigger the GitHub Actions release workflow:
 
+**Via GitHub UI:**
+1. Go to repository → Actions tab
+2. Select "Release" workflow  
+3. Click "Run workflow" button
+4. Select branch and click "Run workflow"
+
+**Via GitHub CLI:**
 ```bash
-npm run release
+gh workflow run release.yml --ref main
+```
+
+**Local dry-run only (for testing):**
+```bash
+npm run release:dry-run
 ```
 
 ## Branch Strategy
