@@ -15,6 +15,37 @@ This MCP server provides tools that are **only useful for sub-agents**. The main
 - ✅ Sub-agents that need access to conversation history
 - ❌ Main Claude Code instance (it already has full context)
 
+## How It Works
+
+Sub-agents pull conversation history from Claude Code logs (`.claude/projects/`) using two tools:
+- **`getCurrentConversation`**: Full conversation context
+- **`getCurrentConversationUpto`**: Context up to a specific user message
+
+**Key Benefits:**
+- **Context Inheritance**: Sub-agents understand previous discussions and gathered information instantly
+- **Cost & Time Savings**: No need to re-gather context within sub-agents
+- **Clean Context Management**: Keep main agent's context window focused
+
+**Example Use Cases:**
+- **After making changes**: Create a lint-agent that fixes issues without polluting main context
+- **Planning phase**: Use `getCurrentConversationUpto` for a planning-agent that only sees requirements/analysis, then generates execution summaries
+- **Side tasks**: Any specialized work that would waste valuable main context space
+
+Perfect workflow: Gather information → Create specialized agents that inherit context → Execute focused tasks.
+
+## Sample Sub-Agent Creation Prompt
+
+```
+Create a [specialized task] agent.
+
+Use sub-agent-continue MCP server's getCurrentConversation tool to pull our 
+full conversation history from Claude Code logs. 
+This will give you complete context about what we've 
+discussed and accomplished so far.
+
+[Specific task instructions...]
+```
+
 ## Installation
 
 ### Requirements
