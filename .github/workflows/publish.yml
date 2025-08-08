@@ -23,7 +23,9 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          npm install @biomejs/cli-linux-x64 @rollup/rollup-linux-x64-gnu @esbuild/linux-x64
         
       - name: Run tests
         run: npm test
