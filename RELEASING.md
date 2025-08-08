@@ -45,9 +45,9 @@ git commit -m "fix: resolve memory leak in conversation parser"
 git commit -m "feat: add support for custom filter presets"
 
 # Major release
-git commit -m "feat!: redesign API for better performance
-
-BREAKING CHANGE: The configuration format has changed. See migration guide."
+git commit -m "feat!: redesign API for better performance" \
+           -m "" \
+           -m "BREAKING CHANGE: The configuration format has changed. See migration guide."
 ```
 
 ### Commit Types
