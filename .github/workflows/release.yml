@@ -36,13 +36,6 @@ jobs:
           git_commit_gpgsign: true
           git_tag_gpgsign: true
           git_config_global: true
-          git_committer_name: ${{ secrets.GIT_COMMITTER_NAME }}
-          git_committer_email: ${{ secrets.GIT_COMMITTER_EMAIL }}
-
-      - name: Set up Git user
-        run: |
-          git config --global user.name "${{ secrets.GIT_COMMITTER_NAME }}"
-          git config --global user.email "${{ secrets.GIT_COMMITTER_EMAIL }}"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -79,10 +72,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           # Ensure semantic-release uses the same identity as the GPG key
-          GIT_AUTHOR_NAME: ${{ secrets.GIT_COMMITTER_NAME }}
-          GIT_AUTHOR_EMAIL: ${{ secrets.GIT_COMMITTER_EMAIL }}
-          GIT_COMMITTER_NAME: ${{ secrets.GIT_COMMITTER_NAME }}
-          GIT_COMMITTER_EMAIL: ${{ secrets.GIT_COMMITTER_EMAIL }}
+          GIT_AUTHOR_NAME: ${{ env.GIT_COMMITTER_NAME }}
+          GIT_AUTHOR_EMAIL: ${{ env.GIT_COMMITTER_EMAIL }}
+          GIT_COMMITTER_NAME: ${{ env.GIT_COMMITTER_NAME }}
+          GIT_COMMITTER_EMAIL: ${{ env.GIT_COMMITTER_EMAIL }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         run: npx semantic-release
