@@ -39,6 +39,11 @@ jobs:
           git_committer_name: ${{ secrets.GIT_COMMITTER_NAME }}
           git_committer_email: ${{ secrets.GIT_COMMITTER_EMAIL }}
 
+      - name: Set up Git user
+        run: |
+          git config --global user.name "${{ secrets.GIT_COMMITTER_NAME }}"
+          git config --global user.email "${{ secrets.GIT_COMMITTER_EMAIL }}"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
