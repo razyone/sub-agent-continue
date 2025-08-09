@@ -1,3 +1,24 @@
+# 1.0.0-beta.1 (2025-08-09)
+
+
+### Bug Fixes
+
+* increase commit-lint line length limits from 100 to 200 characters ([#9](https://github.com/razyone/sub-agent-continue/issues/9)) ([618d3c4](https://github.com/razyone/sub-agent-continue/commit/618d3c4086faf71cd8b6f637f933f0462e53c782))
+* remove persist-credentials option in release workflow ([#14](https://github.com/razyone/sub-agent-continue/issues/14)) ([90d8c21](https://github.com/razyone/sub-agent-continue/commit/90d8c212aedcf4731a33fad2104ad62f995c9b70))
+* update git user configuration in release workflow for GPG signing ([#12](https://github.com/razyone/sub-agent-continue/issues/12)) ([0a82d35](https://github.com/razyone/sub-agent-continue/commit/0a82d3594d7879cb2a9e004df36d6c009d8cbc36))
+* update GPG key configuration in release workflow ([bc02de8](https://github.com/razyone/sub-agent-continue/commit/bc02de862e33672e545f55b58d88c90a37c9539c))
+* update release message format in .releaserc.json to remove changelog notes ([#10](https://github.com/razyone/sub-agent-continue/issues/10)) ([f2bc0f0](https://github.com/razyone/sub-agent-continue/commit/f2bc0f0751971b0c7e7b00d09a6ff4b065e42f55))
+* update release workflow ([#22](https://github.com/razyone/sub-agent-continue/issues/22)) ([8d04e3e](https://github.com/razyone/sub-agent-continue/commit/8d04e3e50aefc32aa6f8d479753cb69870140bcd))
+* upgrade Node.js from 18 to 20 in workflows for semantic-release … ([#4](https://github.com/razyone/sub-agent-continue/issues/4)) ([33c6f06](https://github.com/razyone/sub-agent-continue/commit/33c6f0613f1ba2c3a92bec4515f634fa9fc7dfa4))
+
+
+### Features
+
+* add GPG signing support to semantic-release ([#11](https://github.com/razyone/sub-agent-continue/issues/11)) ([6e35d06](https://github.com/razyone/sub-agent-continue/commit/6e35d065790fddb96a5031667f9ef449beab989b))
+* configure semantic-release with proper branch strategy ([#8](https://github.com/razyone/sub-agent-continue/issues/8)) ([6019ba6](https://github.com/razyone/sub-agent-continue/commit/6019ba6fee1b8abd9a6f9ba14d33b59b997c5905))
+* initial MCP server implementation for Claude Code conversations ([0cab00d](https://github.com/razyone/sub-agent-continue/commit/0cab00d9a82d77bc6425e10d725bdb4af08c317b))
+* Sub Agent Continue MCP server for Claude Code conversation context ([f9c1d97](https://github.com/razyone/sub-agent-continue/commit/f9c1d97c39e17819e770e11639fbb82f15c9d96a))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
