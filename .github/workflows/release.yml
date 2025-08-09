@@ -68,22 +68,6 @@ jobs:
       - name: Run build
         run: npm run build
 
-      - name: Wait for CodeQL workflow to complete
-        uses: lewagon/wait-on-check-action@v1.3.4
-        with:
-          ref: ${{ github.sha }}
-          check-name: 'Analyze (actions)'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 30
-
-      - name: Wait for CodeQL workflow to complete (JS/TS)
-        uses: lewagon/wait-on-check-action@v1.3.4
-        with:
-          ref: ${{ github.sha }}
-          check-name: 'Analyze (javascript-typescript)'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 30
-
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
