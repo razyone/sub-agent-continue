@@ -54,7 +54,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-          npm install @biomejs/cli-linux-x64 @rollup/rollup-linux-x64-gnu @esbuild/linux-x64
+          npm install --no-save @biomejs/cli-linux-x64 @rollup/rollup-linux-x64-gnu @esbuild/linux-x64
 
       - name: Run type check
         run: npm run typecheck
@@ -67,22 +67,6 @@ jobs:
 
       - name: Run build
         run: npm run build
-
-      - name: Wait for CodeQL workflow to complete
-        uses: lewagon/wait-on-check-action@v1.3.4
-        with:
-          ref: ${{ github.sha }}
-          check-name: 'Analyze (actions)'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 30
-
-      - name: Wait for CodeQL workflow to complete (JS/TS)
-        uses: lewagon/wait-on-check-action@v1.3.4
-        with:
-          ref: ${{ github.sha }}
-          check-name: 'Analyze (javascript-typescript)'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 30
 
       - name: Release
         env:
