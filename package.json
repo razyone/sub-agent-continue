@@ -62,7 +62,10 @@
     "provenance": true
   },
   "dependencies": {
+    "@biomejs/cli-linux-x64": "^2.1.4",
+    "@esbuild/linux-x64": "^0.25.8",
     "@modelcontextprotocol/sdk": "^0.7.0",
+    "@rollup/rollup-linux-x64-gnu": "^4.46.2",
     "lru-cache": "^11.0.2",
     "zod": "^4.0.15"
   },
@@ -96,5 +99,6 @@
     "package.json": [
       "ultracite format"
     ]
-  }
+  },
+  "version": "1.0.0-beta.1"
 }
